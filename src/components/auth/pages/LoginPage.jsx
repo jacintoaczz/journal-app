@@ -16,7 +16,7 @@ export const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginWithEmailAndPassword(123456, "Jacinto"));
+    dispatch(loginWithEmailAndPassword(email, password));
   };
 
   return (
