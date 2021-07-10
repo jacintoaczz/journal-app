@@ -1,5 +1,9 @@
 import { types } from "../../../../types/types";
 
+/**
+ * @param {string} email
+ * @param {string} password
+ */
 export const loginWithEmailAndPassword = (email, password) => {
   return (dispatch) => {
     setTimeout(() => {
