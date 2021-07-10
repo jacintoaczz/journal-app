@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { useForm } from "../../../hooks/useForm";
-import { login } from "../../../app/store/features/auth/actions/auth";
+import { loginWithEmailAndPassword } from "../../../app/store/features/auth/actions/auth";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(123456, "Jacinto"));
+    dispatch(loginWithEmailAndPassword(123456, "Jacinto"));
   };
 
   return (
