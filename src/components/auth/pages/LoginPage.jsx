@@ -1,17 +1,37 @@
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { useForm } from "../../../hooks/useForm";
+import { login } from "../../../app/store/features/auth/actions/auth";
 
 export const LoginPage = () => {
+  const dispatch = useDispatch();
+
+  const [inputValues, handleInputChange] = useForm({
+    email: "user@gmail.com",
+    password: "123456",
+  });
+
+  const { email, password } = inputValues;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(123456, "Jacinto"));
+  };
+
   return (
     <>
       <h2 className="auth__title">- Login -</h2>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input
             type="text"
             name="email"
             className="auth__input"
             required={true}
+            value={email}
+            onChange={handleInputChange}
           />
 
           <label htmlFor="input" className="control-label">
@@ -26,6 +46,8 @@ export const LoginPage = () => {
             name="password"
             className="auth__input"
             required={true}
+            value={password}
+            onChange={handleInputChange}
           />
 
           <label htmlFor="input" className="control-label">
