@@ -1,5 +1,4 @@
 import { createStore, combineReducers } from "redux";
-import { devToolsEnhancer } from "redux-devtools-extension";
 
 import { authReducer } from "./features/auth/reducers/auth.reducer";
 
@@ -7,4 +6,7 @@ const reducers = combineReducers({
   auth: authReducer,
 });
 
-export const store = createStore(reducers, devToolsEnhancer({}));
+export const store = createStore(
+  reducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
