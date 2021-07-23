@@ -1,9 +1,13 @@
 /* 
   Estilos generales para los formualrios   */
 .form-group {
-  position: relative;
-  margin-top: 2.25rem;
   margin-bottom: 2.25rem;
+  margin-top: 2.25rem;
+  position: relative;
+
+  .error-msg {
+    color: $error;
+  }
 }
 
 .form-group .control-label {
@@ -19,7 +23,7 @@
   transition: all 0.28s ease;
 }
 .form-group input:focus ~ .control-label,
-.form-group input:valid ~ .control-label {
+.form-group input:not(:placeholder-shown) ~ .control-label {
   font-size: 0.8rem;
   color: $dark-grey;
   top: -1rem;
@@ -48,20 +52,21 @@
 }
 
 .form-group .bar {
-  position: relative;
   border-bottom: 0.0625rem solid $dark-grey;
   display: block;
+  margin: 0 0 0.2rem 0;
+  position: relative;
 }
 .form-group .bar::before {
+  -webkit-transition: left 0.28s ease, width 0.28s ease;
+  background: $primary;
+  bottom: -0.0625rem;
   content: "";
   height: 0.125rem;
-  width: 0;
   left: 50%;
-  bottom: -0.0625rem;
   position: absolute;
-  background: $primary;
-  -webkit-transition: left 0.28s ease, width 0.28s ease;
   transition: left 0.28s ease, width 0.28s ease;
+  width: 0;
   z-index: 2;
 }
 .form-group input:focus ~ .bar::before {
