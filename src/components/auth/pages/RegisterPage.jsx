@@ -1,66 +1,99 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import validator from "validator";
+
+import { useForm } from "../../../hooks/useForm";
+import { TextInput } from "../../forms/TextInput";
 
 export const RegisterPage = () => {
+  const dispatch = useDispatch();
+
+  const [inputValues, errors, handleInputChange, validateInputs] = useForm(
+    {
+      name: "Allenz",
+      email: "email@email.com",
+      password: "123456",
+      passwordConfirm: "123456",
+    },
+    {
+      name: {
+        required: {
+          value: true,
+          message: "Name is required.",
+        },
+      },
+      email: {
+        custom: {
+          isValid: (value) => validator.isEmail(value),
+          message: "Must be a valid email.",
+        },
+      },
+      password: {
+        custom: {
+          isValid: (value) => value.length > 5,
+          message: "Must have at least 6 characters.",
+        },
+      },
+      passwordConfirm: {
+        custom: {
+          isValid: (value) => value !== passwordConfirm,
+          message: "Both passwords should match.",
+        },
+      },
+    }
+  );
+  const { name, email, password, passwordConfirm } = inputValues;
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    if (!validateInputs()) {
+      console.log("Formulario incorrecto.");
+      return false;
+    }
+  };
+
   return (
     <>
       <h2 className="auth__title">- Register -</h2>
 
-      <form>
-        <div className="form-group">
-          <input
-            type="text"
-            name="name"
-            className="auth__input"
-            required={true}
-          />
+      <form onSubmit={handleRegister}>
+        <TextInput
+          type={"text"}
+          name={"name"}
+          label={"Name"}
+          handleInputChange={handleInputChange}
+          inputValue={name}
+          errorMsg={errors.name}
+        />
 
-          <label htmlFor="input" className="control-label">
-            Name
-          </label>
-          <i className="bar"></i>
-        </div>
+        <TextInput
+          type={"text"}
+          name={"email"}
+          label={"Email"}
+          handleInputChange={handleInputChange}
+          inputValue={email}
+          errorMsg={errors.email}
+        />
 
-        <div className="form-group">
-          <input
-            type="text"
-            name="email"
-            className="auth__input"
-            required={true}
-          />
+        <TextInput
+          type={"password"}
+          name={"password"}
+          label={"Password"}
+          handleInputChange={handleInputChange}
+          inputValue={password}
+          errorMsg={errors.password}
+        />
 
-          <label htmlFor="input" className="control-label">
-            Email
-          </label>
-          <i className="bar"></i>
-        </div>
-
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            className="auth__input"
-            required={true}
-          />
-
-          <label htmlFor="input" className="control-label">
-            Password
-          </label>
-          <i className="bar"></i>
-        </div>
-
-        <div className="form-group">
-          <input
-            type="password"
-            name="passwordConfirm"
-            className="auth__input"
-            required={true}
-          />
-
-          <label htmlFor="input" className="control-label">
-            Confirm password
-          </label>
-          <i className="bar"></i>
-        </div>
+        <TextInput
+          type={"password"}
+          name={"passwordConfirm"}
+          label={"Confirm password"}
+          handleInputChange={handleInputChange}
+          inputValue={passwordConfirm}
+          errorMsg={errors.passwordConfirm}
+        />
 
         <button type="submit" className="btn btn-primary btn-block mb-5">
           Register
