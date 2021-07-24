@@ -10,7 +10,7 @@ import {
 export const LoginPage = () => {
   const dispatch = useDispatch();
 
-  const [inputValues, handleInputChange] = useForm({
+  const [inputValues, errors, handleInputChange] = useForm({
     email: "user@gmail.com",
     password: "123456",
   });
