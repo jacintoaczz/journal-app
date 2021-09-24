@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import validator from "validator";
 
 import { useForm } from "../../../hooks/useForm";
 import { TextInput } from "../../forms/TextInput";
+import { startRegisterWithEmailAndPassword } from "../../../app/store/features/auth/actions/auth";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export const RegisterPage = () => {
       },
       passwordConfirm: {
         custom: {
-          isValid: (value) => value !== passwordConfirm,
+          isValid: (value) => value === passwordConfirm,
           message: "Both passwords should match.",
         },
       },
@@ -48,9 +48,8 @@ export const RegisterPage = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    if (!validateInputs()) {
-      console.log("Formulario incorrecto.");
-      return false;
+    if (validateInputs()) {
+      dispatch(startRegisterWithEmailAndPassword(email, password, name));
     }
   };
 

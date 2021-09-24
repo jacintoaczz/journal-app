@@ -7,7 +7,13 @@ const initialState = {
 export const uiReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.setLoading:
-      break;
+      return {
+        loading: true,
+      };
+    case types.unsetLoading:
+      return {
+        loading: false,
+      };
 
     default:
       return state;

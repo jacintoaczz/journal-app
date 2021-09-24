@@ -1,25 +1,45 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useForm } from "../../../hooks/useForm";
 import {
   loginWithEmailAndPassword,
   startGoogleLogin,
 } from "../../../app/store/features/auth/actions/auth";
+import { TextInput } from "../../forms/TextInput";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.ui);
 
-  const [inputValues, errors, handleInputChange] = useForm({
-    email: "user@gmail.com",
-    password: "123456",
-  });
+  const [inputValues, errors, handleInputChange, validateInputs] = useForm(
+    {
+      email: "user@gmail.com",
+      password: "123456",
+    },
+    {
+      email: {
+        required: {
+          value: true,
+          message: "This field is required.",
+        },
+      },
+      password: {
+        required: {
+          value: true,
+          message: "This field is required.",
+        },
+      },
+    }
+  );
 
   const { email, password } = inputValues;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginWithEmailAndPassword(email, password));
+    if (validateInputs()) {
+      dispatch(loginWithEmailAndPassword(email, password));
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -31,39 +51,29 @@ export const LoginPage = () => {
       <h2 className="auth__title">- Login -</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="email"
-            className="auth__input"
-            required={true}
-            value={email}
-            onChange={handleInputChange}
-          />
+        <TextInput
+          type={"text"}
+          name={"email"}
+          label={"Email"}
+          handleInputChange={handleInputChange}
+          inputValue={email}
+          errorMsg={errors.email}
+        />
 
-          <label htmlFor="input" className="control-label">
-            Email
-          </label>
-          <i className="bar"></i>
-        </div>
+        <TextInput
+          type={"password"}
+          name={"password"}
+          label={"Password"}
+          handleInputChange={handleInputChange}
+          inputValue={password}
+          errorMsg={errors.password}
+        />
 
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            className="auth__input"
-            required={true}
-            value={password}
-            onChange={handleInputChange}
-          />
-
-          <label htmlFor="input" className="control-label">
-            Password
-          </label>
-          <i className="bar"></i>
-        </div>
-
-        <button type="submit" className="btn btn-primary btn-block">
+        <button
+          type="submit"
+          className="btn btn-primary btn-block"
+          disabled={loading}
+        >
           Login
         </button>
 

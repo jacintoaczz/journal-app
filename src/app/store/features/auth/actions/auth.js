@@ -3,6 +3,7 @@ import {
   firebase,
   googleAuthProvider,
 } from "../../../../../firebase/firebase-config";
+import { setLoading, unsetLoading } from "../../ui/actions/uiActions";
 
 /**
  * @param {string} email
@@ -10,9 +11,19 @@ import {
  */
 export const loginWithEmailAndPassword = (email, password) => {
   return (dispatch) => {
-    setTimeout(() => {
-      dispatch(login(123, "Allenz"));
-    }, 3500);
+    dispatch(setLoading());
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(({ user }) => {
+        dispatch(login(user.uid, user.displayName));
+        dispatch(unsetLoading());
+      })
+      .catch((e) => {
+        console.log(e);
+        dispatch(unsetLoading());
+      });
   };
 };
 
@@ -36,3 +47,29 @@ export const startGoogleLogin = () => {
       });
   };
 };
+
+export const startRegisterWithEmailAndPassword = (email, password, name) => {
+  return (dispatch) => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(async ({ user }) => {
+        await user.updateProfile({ displayName: name });
+        dispatch(login(user.uid, user.displayName));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};
+
+export const startLogout = () => {
+  return async (dispatch) => {
+    await firebase.auth().signOut();
+    dispatch(logout());
+  };
+};
+
+export const logout = () => ({
+  type: types.logout,
+});
